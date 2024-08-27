@@ -1,0 +1,10 @@
+services:
+  firstproject:
+    image: firstproject
+    build:
+      context: first-project-be
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000

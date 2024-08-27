@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Simple test to see if .htaccess is working
+  Redirect 302 /test.html /another-page.html
+
+  # Ignore existing files and directories
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Redirect all other routes to index.html
+  RewriteRule ^(.*)$ /index.html [L]
+</IfModule>

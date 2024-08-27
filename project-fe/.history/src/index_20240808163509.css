@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.custom-toast-container {
+  position: fixed;
+  bottom: 1rem;
+  /* Adjust as needed */
+  right: 1rem;
+  /* Adjust as needed */
+  z-index: 9999;
+  /* Ensure it's above other content */
+}
+
+/* If needed, you can use !important to override default styles */
+.custom-toast-container .Toastify__toast-container--top-right {
+  top: auto !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+}
