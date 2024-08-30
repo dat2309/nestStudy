@@ -3,16 +3,19 @@ export declare const MediaSchema: Schema<any, import("mongoose").Model<any, any,
     filename?: string;
     mimetype?: string;
     encoding?: string;
+    size?: string;
     url?: string;
 }, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
     filename?: string;
     mimetype?: string;
     encoding?: string;
+    size?: string;
     url?: string;
 }>> & import("mongoose").FlatRecord<{
     filename?: string;
     mimetype?: string;
     encoding?: string;
+    size?: string;
     url?: string;
 }> & {
     _id: import("mongoose").Types.ObjectId;

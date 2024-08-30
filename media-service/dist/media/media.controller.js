@@ -33,11 +33,10 @@ let MediaController = class MediaController {
             return new responseClass_1.ResponseData('Failed to upload avatar', responseEnum_1.HttpStatus.INTERNAL_SERVER_ERROR, 'Internal server error');
         }
     }
-    async getImage(id, res) {
+    async getImage(url, res) {
         try {
-            const media = await this.mediaService.findMediaById(id);
+            const { media, downloadStream } = await this.mediaService.findAndStreamMediaByUrl(url);
             console.log(media);
-            const downloadStream = await this.mediaService.getFileById(media.url);
             if (!downloadStream) {
                 return res.status(404).send('media not found');
             }
@@ -67,8 +66,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MediaController.prototype, "uploadFile", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('load/:url'),
+    __param(0, (0, common_1.Param)('url')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),

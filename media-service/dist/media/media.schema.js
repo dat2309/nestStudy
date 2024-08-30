@@ -6,6 +6,7 @@ exports.MediaSchema = new mongoose_1.Schema({
     filename: String,
     mimetype: String,
     encoding: String,
+    size: String,
     url: String,
 });
 //# sourceMappingURL=media.schema.js.map

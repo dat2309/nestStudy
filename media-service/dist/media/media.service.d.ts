@@ -8,5 +8,14 @@ export declare class MediaService {
     findMediaById(id: string): Promise<import("mongoose").Document<unknown, {}, Media> & Media & Required<{
         _id: unknown;
     }>>;
-    getFileById(id: string): Promise<import("mongodb").GridFSBucketReadStream>;
+    findMediaByUrl(url: string): Promise<import("mongoose").Document<unknown, {}, Media> & Media & Required<{
+        _id: unknown;
+    }>>;
+    getFileByUrl(url: string): Promise<import("mongodb").GridFSBucketReadStream>;
+    findAndStreamMediaByUrl(url: string): Promise<{
+        media: import("mongoose").Document<unknown, {}, Media> & Media & Required<{
+            _id: unknown;
+        }>;
+        downloadStream: import("mongodb").GridFSBucketReadStream;
+    }>;
 }

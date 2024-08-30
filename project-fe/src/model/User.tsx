@@ -16,3 +16,10 @@ export class User {
         this.avatar = data?.avatar; // id may or may not be providedXD
     }
 }
+
+export class Avatar {
+    url?:string
+    constructor(data?: Partial<Avatar>) {
+        Object.assign(this, data);
+    }
+}

@@ -2,16 +2,27 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ResponseData } from 'src/global/responseClass';
 import { HttpMessage, HttpStatus } from 'src/global/responseEnum';
+import { RsaService } from 'src/rsa/rsa.service';
 import { AccountService } from './account.service';
 import { LoginDto } from './dto/login.dto';
 
 @Controller()
 export class AccountController {
-  constructor(private readonly accountService: AccountService) { }
+  constructor(private readonly accountService: AccountService,
+    private readonly rsaService: RsaService,
+  ) { }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<ResponseData<any>> {
-    const account = await this.accountService.validateAccount(loginDto.account_name, loginDto.password);
+    const decryptedPayload = this.rsaService.decrypt(loginDto.password);
+    let password: string;
+    try {
+      const decryptedObject = JSON.parse(decryptedPayload);
+      password = decryptedObject.password;
+    } catch (error) {
+      throw new Error('Failed to parse decrypted payload');
+    }
+    const account = await this.accountService.validateAccount(loginDto.account_name, password);
     if (!account) {
       return {
         data: null,

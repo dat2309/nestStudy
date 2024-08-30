@@ -23,12 +23,12 @@ export class MediaController {
             return new ResponseData<string>('Failed to upload avatar', HttpStatus.INTERNAL_SERVER_ERROR, 'Internal server error');
         }
     }
-    @Get(':id')
-    async getImage(@Param('id') id: string, @Res() res: Response) {
+    @Get('load/:url')
+    async getImage(@Param('url') url: string, @Res() res: Response) {
         try {
-            const media = await this.mediaService.findMediaById(id);
+            const { media, downloadStream } = await this.mediaService.findAndStreamMediaByUrl(url);
             console.log(media);
-            const downloadStream = await this.mediaService.getFileById(media.url);
+
             if (!downloadStream) {
                 return res.status(404).send('media not found');
             }

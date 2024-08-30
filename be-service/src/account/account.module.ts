@@ -1,6 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RsaModule } from 'src/rsa/rsa.module';
 import { UserModule } from '../user/user.module'; // Ensure this import is correct
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
@@ -8,7 +9,7 @@ import { Account } from './entities/account.entity';
 
 
 @Module({
-  imports: [
+  imports: [RsaModule,
     TypeOrmModule.forFeature([Account]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

@@ -81,6 +81,8 @@ export class UserService {
 
 
   async findAll(keySearch?: string, sortBy?: string): Promise<UserResponse[]> {
+    console.log(sortBy)
+    console.log(sortBy)
     const sortByEnum = this.convertNumericSortBy(Number(sortBy));
     console.log(sortBy)
 
@@ -204,6 +206,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new Error('User not found');
 
+    console.log(avatar)
     user.avatar = avatar; // Store file buffer
 
     const savedUser = await this.userRepository.save(user);;

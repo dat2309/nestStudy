@@ -1,7 +1,7 @@
-import { User } from "../model/User";
+import forge from 'node-forge';
+import { Avatar, User } from "../model/User";
 import axiosInstance from "./AxiosInstance";
 import { BaseResponse } from "./BaseResponse";
-
 
 
 
@@ -79,12 +79,32 @@ export const removeUser = async (id: number): Promise<BaseResponse<any>> => {
         throw error;
     }
 };
-
+const fetchPublicKey = async () => {
+    try {
+        const response = await axiosInstance.get('/rsa/plk');
+        return response.data; // Base64-encoded public key
+    } catch (error) {
+        console.error('Failed to fetch public key', error);
+        throw error;
+    }
+};
+const encryptPayload = (publicKeyBase64: string, payloadString: string) => {
+    const publicKeyPem = forge.util.decode64(publicKeyBase64); // Convert Base64 to PEM
+    const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);// Convert payload to a string
+    const encryptedPayload = publicKey.encrypt(payloadString, 'RSA-OAEP', {
+        md: forge.md.sha256.create(), // Use SHA-256 as the hashing algorithm
+    });
+    return forge.util.encode64(encryptedPayload); // Return Base64-encoded encrypted payload
+};
 export const login = async (accountName: string, password: string): Promise<BaseResponse<any>> => {
     try {
+
+        const publicKeyBase64 = await fetchPublicKey();
+        const payload = { password: password };
+        const encryptedPayload = encryptPayload(publicKeyBase64, JSON.stringify(payload));
         const response = await axiosInstance.post('/login', {
             account_name: accountName,
-            password: password,
+            password: encryptedPayload,
         });
         return response.data;
     } catch (error) {
@@ -92,16 +112,36 @@ export const login = async (accountName: string, password: string): Promise<Base
         throw error;
     }
 };
-export const uploadAvatar = async (userId: number, file: File): Promise<BaseResponse<User>> => {
+export const genarateAvatar = async (file: File): Promise<BaseResponse<Avatar>> => {
     try {
         const formData = new FormData();
         formData.append('file', file);
-
         console.log(formData.get('file'))
-        const response = await axiosInstance.post(`/user/${userId}/upload-avatar`, formData, {
+        const response = await axiosInstance.post(`/media/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: localStorage.getItem('token') || '',
+                ProjectId: '2'
+            },
+        });
+
+        return response.data; // Adjust based on the response structure from your API
+    } catch (error) {
+        console.error('Failed to upload avatar', error);
+        throw error; // Ensure errors are thrown so they can be handled in the component
+    }
+};
+
+export const updateAvatar = async (userId: number, avatar: String): Promise<BaseResponse<User>> => {
+    try {
+
+        const response = await axiosInstance.post(`/user/${userId}/upload-avatar`, {
+            avatar: avatar
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: localStorage.getItem('token') || '',
+                ProjectId: '1'
             },
         });
 

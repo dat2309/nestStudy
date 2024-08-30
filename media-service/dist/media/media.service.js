@@ -40,10 +40,11 @@ let MediaService = class MediaService {
                     filename: file.originalname,
                     mimetype: file.mimetype,
                     encoding: file.encoding,
+                    size: file.size,
                     url: uploadStream.id.toString(),
                 });
                 await newMedia.save();
-                const mediaResponse = { url: newMedia._id.toString() };
+                const mediaResponse = { url: uploadStream.id.toString() };
                 resolve(mediaResponse);
             });
             uploadStream.on('error', (error) => {
@@ -54,9 +55,22 @@ let MediaService = class MediaService {
     async findMediaById(id) {
         return this.mediaModel.findById(id).exec();
     }
-    async getFileById(id) {
-        const objectId = new mongodb_1.ObjectId(id);
+    async findMediaByUrl(url) {
+        return this.mediaModel.findOne({ url }).exec();
+        ;
+    }
+    async getFileByUrl(url) {
+        const objectId = new mongodb_1.ObjectId(url);
         return this.bucket.openDownloadStream(objectId);
+    }
+    async findAndStreamMediaByUrl(url) {
+        const media = await this.mediaModel.findOne({ url }).exec();
+        if (!media) {
+            return { media: null, downloadStream: null };
+        }
+        const objectId = new mongodb_1.ObjectId(url);
+        const downloadStream = this.bucket.openDownloadStream(objectId);
+        return { media, downloadStream };
     }
 };
 exports.MediaService = MediaService;

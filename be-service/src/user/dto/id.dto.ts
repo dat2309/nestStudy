@@ -8,3 +8,12 @@ export class IdDto {
     })
     id: string;
 }
+
+export class AvatarDto {
+    @ApiProperty({
+        description: 'The ID of the user to be removed',
+        type: String,
+        example: '12345',
+    })
+    avatar: string;
+}

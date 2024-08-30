@@ -10,6 +10,7 @@ import { CustomHeaderMiddleware } from './global/custom.header.middleware';
 import { JwtStrategy } from './global/jwt.strategy';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
+import { RsaModule } from './rsa/rsa.module';
 
 
 @Module({
@@ -36,6 +37,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
 
     }),
+    RsaModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

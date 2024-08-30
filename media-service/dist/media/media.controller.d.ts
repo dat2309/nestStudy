@@ -6,5 +6,5 @@ export declare class MediaController {
     private readonly mediaService;
     constructor(mediaService: MediaService);
     uploadFile(file: Express.Multer.File): Promise<ResponseData<MediaResponse | string>>;
-    getImage(id: string, res: Response): Promise<Response<any, Record<string, any>>>;
+    getImage(url: string, res: Response): Promise<Response<any, Record<string, any>>>;
 }

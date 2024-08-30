@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { HeadersInterceptor } from 'src/global/headers.interceptor';
@@ -7,7 +7,7 @@ import { ResponseData } from 'src/global/responseClass';
 import { HttpStatus } from 'src/global/responseEnum';
 import { RolesGuard } from 'src/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
-import { IdDto } from './dto/id.dto';
+import { AvatarDto, IdDto } from './dto/id.dto';
 import { UserResponse } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -59,7 +59,9 @@ export class UserController {
   ): Promise<ResponseData<UserResponse[] | string>> {
     try {
       // Fetch users based on query parameters
+
       const users = await this.userService.findAll(keySearch, sortBy);
+
       return new ResponseData<UserResponse[]>(users, HttpStatus.OK, 'Users retrieved successfully');
     } catch (error) {
       // Handle errors and return appropriate response
@@ -156,11 +158,12 @@ export class UserController {
   })
   async uploadAvatar(
     @Param('id') userId: number,
-    @Body() avatar: string,
+    @Body() avatarDto: AvatarDto,
   ): Promise<ResponseData<UserResponse | string>> {
- 
+
     try {
 
+      const { avatar } = avatarDto;
       return new ResponseData<UserResponse>(await this.userService.uploadAvatar(userId, avatar), HttpStatus.OK, 'Avatar uploaded successfully');
     } catch (error) {
       if (error.status === HttpStatus.FORBIDDEN) {

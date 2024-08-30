@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { isSuccess } from '../api/BaseResponse';
-import { createUser, getUserDetails, getUsers, removeUser, updateUser, uploadAvatar } from '../api/UserApi';
+import { createUser, genarateAvatar, getUserDetails, getUsers, removeUser, updateAvatar, updateUser } from '../api/UserApi';
 import CreateUserModal from '../components/CreateUserModal';
 import UpdateUserModal from '../components/UpdateUserModal';
 import { User } from '../model/User';
@@ -61,7 +61,8 @@ const UserListPage: React.FC = () => {
         setCurrentUser(storedUser || new User());
     }, []);
     useEffect(() => {
-        fetchUsers();
+        fetchUsers()
+
     }, [sortBy, debouncedSearch]);
 
     const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -161,7 +162,9 @@ const UserListPage: React.FC = () => {
         if (!avatarFile) return;
         if (id === 0) return;
         try {
-            const response = await uploadAvatar(id, avatarFile);
+            const responseGenarate = await genarateAvatar(avatarFile);
+            console.log(responseGenarate.data.url)
+            const response = await updateAvatar(id, responseGenarate.data.url ? responseGenarate.data.url : '');
             if (isSuccess(response)) {
                 if (id === currentUser.id) {
                     localStorage.setItem("user", JSON.stringify({ ...currentUser, avatar: response.data.avatar }));
@@ -205,10 +208,10 @@ const UserListPage: React.FC = () => {
             <div className="flex items-center mb-4">
                 {currentUser.avatar && (
                     <img
-                        src={`data:image/jpeg;base64,${currentUser.avatar}`} // Assuming avatar is base64 encoded
+                        src={`${process.env.REACT_APP_API_URL_MEDIA}${currentUser.avatar}`} // Assuming avatar is base64 encoded
                         alt="Current User Avatar"
                         className="w-16 h-16 rounded-full border border-gray-300 cursor-pointer"
-                        onClick={() => handleImageClick(`data:image/jpeg;base64,${currentUser.avatar}`)}
+                        onClick={() => handleImageClick(`${process.env.REACT_APP_API_URL_MEDIA}${currentUser.avatar}`)}
                     />
                 )}
                 <div className="ml-4">
@@ -295,11 +298,11 @@ const UserListPage: React.FC = () => {
                         {selectedUser.avatar && (
                             <div className="flex justify-center mb-4">
                                 <img
-                                    src={`data:image/jpeg;base64,${selectedUser.avatar}`}
+                                    src={`${process.env.REACT_APP_API_URL_MEDIA}${selectedUser.avatar}`}
                                     alt="User Avatar"
                                     style={{ width: '100px', height: '100px' }}
                                     className="rounded-full cursor-pointer"
-                                    onClick={() => handleImageClick(`data:image/jpeg;base64,${selectedUser.avatar}`)}
+                                    onClick={() => handleImageClick(`${process.env.REACT_APP_API_URL_MEDIA}${selectedUser.avatar}`)}
                                 />
                             </div>
                         )}

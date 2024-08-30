@@ -19,6 +19,7 @@ export class AccountService {
 
   async validateAccount(accountName: string, password: string): Promise<any> {
     const account = await this.accountRepository.findOne({ where: { accountName }, relations: ['user'] });
+    console.log(password)
     if (account && await bcrypt.compare(password, account.password)) {
       return account;
     }

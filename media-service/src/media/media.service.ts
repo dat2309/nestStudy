@@ -34,10 +34,11 @@ export class MediaService {
                     filename: file.originalname,
                     mimetype: file.mimetype,
                     encoding: file.encoding,
+                    size: file.size,
                     url: uploadStream.id.toString(), // Store GridFS file ID as a string
                 });
                 await newMedia.save();
-                const mediaResponse = { url: newMedia._id.toString() };
+                const mediaResponse = { url: uploadStream.id.toString() };
                 resolve(mediaResponse);
             });
 
@@ -49,11 +50,30 @@ export class MediaService {
 
     async findMediaById(id: string) {
         return this.mediaModel.findById(id).exec(); // Retrieves the media document by its _id
+
     }
 
+    async findMediaByUrl(url: string) {
+        return this.mediaModel.findOne({ url }).exec();; // Retrieves the media document by its url
+    }
 
-    async getFileById(id: string) {
-        const objectId = new ObjectId(id);
+    async getFileByUrl(url: string) {
+        const objectId = new ObjectId(url);
         return this.bucket.openDownloadStream(objectId);
+    }
+
+     async findAndStreamMediaByUrl(url: string) {
+        // Find the media document by URL
+        const media = await this.mediaModel.findOne({ url }).exec();
+
+        if (!media) {
+            return { media: null, downloadStream: null };
+        }
+
+        // Create a download stream from GridFS using the URL (converted to ObjectId)
+        const objectId = new ObjectId(url);
+        const downloadStream = this.bucket.openDownloadStream(objectId);
+
+        return { media, downloadStream };
     }
 }
