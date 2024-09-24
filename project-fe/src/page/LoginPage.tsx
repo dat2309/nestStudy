@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { isSuccess } from '../api/BaseResponse';
 import { login } from '../api/UserApi';
+import EmployeeTable from '../components/DataTable';
 import DateInput from '../components/DateInput';
 import DropdownSeleteOne from '../components/DropdownSeleteOne';
 import MultiSelectDropdown from '../components/MultiSelectDropdown';
@@ -165,6 +166,7 @@ const Login: React.FC = () => {
                     />
                 </div>
 
+                <EmployeeTable ></EmployeeTable>
                 <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-sm">
                     <h2 className="text-2xl font-bold mb-6 text-center">J97</h2>
 
@@ -225,6 +227,7 @@ const Login: React.FC = () => {
 
             </div>
             <div>
+
                 <button
                     type="submit"
                     onMouseEnter={getRandomPosition}
@@ -236,8 +239,10 @@ const Login: React.FC = () => {
                     }}
                     className="bg-blue-500 text-white py-2 px-4 rounded transition duration-200 hover:bg-blue-600"
                 >
-                    Con
+                    Đố bấm được
+
                 </button>
+
             </div>
         </div>
     );

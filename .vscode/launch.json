@@ -1,15 +1,13 @@
 {
     "configurations": [
         {
-            "name": "Docker Node.js Launch",
-            "type": "docker",
-            "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "platform": "node",
-            "node": {
-                "package": "${workspaceFolder}/first-project-be/package.json",
-                "localRoot": "${workspaceFolder}/first-project-be"
-            }
+            "type": "node",
+            "request": "attach",
+            "name": "Attach NestJS WS",
+            "port": 9229,
+            "restart": true,
+            "stopOnEntry": false,
+            "protocol": "inspector"
         }
     ]
 }

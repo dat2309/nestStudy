@@ -66,7 +66,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
             {/* Dropdown button */}
             <button
                 type="button"
-                className={`w-full p-2 border rounded-md shadow-sm text-left focus:outline-none focus:ring-2 relative ${disabled ? 'bg-gray-200 cursor-not-allowed' : 'focus:ring-blue-500'
+                className={`w-full p-2 border rounded-md shadow-sm text-left focus:outline-none fNaocus:ring-2 relative ${disabled ? 'bg-gray-200 cursor-not-allowed' : 'focus:ring-blue-500'
                     }`}
                 onClick={() => !disabled && setIsOpen(!isOpen)} // Only toggle if not disabled
                 disabled={disabled} // Disable button if disabled is true
@@ -124,7 +124,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
                             <button
                                 type="button"
                                 onClick={() => toggleSelectOption(option)}
-                                className="text-gray-500 hover:text-gray-700"
+                                className="position-absolute right-0 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             >
                                 &times;
                             </button>

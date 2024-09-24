@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.trackasiagl-ctrl-bottom-left,
+.trackasiagl-ctrl-bottom-right {
+  display: none !important;
+}
+
+input#modified::-webkit-calendar-picker-indicator {
+  width: 100%;
+  margin: 0;
+  border: 1px solid red;
+  background: none;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

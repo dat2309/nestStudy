@@ -13,7 +13,7 @@ export class ProxyMiddleware implements NestMiddleware {
             try {
                 // Your existing proxy logic
                 const projectId = req.headers['projectid'] as string;
-                
+
                 // Define the target URL based on the projectId
                 let target: string;
                 if (req.baseUrl.includes(`api/media/load`)) {
